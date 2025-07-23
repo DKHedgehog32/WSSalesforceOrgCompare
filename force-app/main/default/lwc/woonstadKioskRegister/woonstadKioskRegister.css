@@ -1,0 +1,65 @@
+/* --- OVERALL KIOSK WRAPPER --- */
+.kiosk-wrapper {
+    background-color: #0061cd;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- SUCCESS SCREEN --- */
+.success-screen {
+    background-color: #0061cd;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 4rem;
+    position: relative;
+}
+
+/* --- MESSAGE CARD --- */
+.message-card {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 3rem 4rem;
+    border-radius: 1rem;
+    color: #3f6f8f;
+    width: 1500px; /* ✅ Requested width */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* --- TITLE TEXT --- */
+.message-card h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* --- BODY TEXT --- */
+.message-card p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+}
+
+/* --- LOGO --- */
+.logo-top-left {
+    position: absolute;
+    top: 3cm;
+    left: 2cm;
+    z-index: 10;
+}
+.logo-top-left img {
+    width: 1000px;
+    height: auto;
+    opacity: 0.95;
+}
+
+:host{
+    --slds-c-button-brand-color-background: red;
+}

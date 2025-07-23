@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <description>Displays a welcome message on the Home Page of the Contact Center app</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>What is the current time of day</description>
+        <name>forT_TimeOfDay</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 6 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 12, &quot;Goedemorgen&quot;,
+   IF(
+      VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 12 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 18, &quot;Goedemiddag&quot;,
+      IF(
+         VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 18 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 24, &quot;Goedenavond&quot;,
+         &quot;Welterusten&quot;
+      )
+   )
+)</expression>
+    </formulas>
+    <interviewLabel>Screen Flow - Home Page Welcome Message {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Screen Flow - Home Page Welcome Message</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Welcome</name>
+        <label>Welcome</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>WelcomeMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-family: verdana; color: rgb(12, 34, 74); font-size: 20px;&quot;&gt;{!forT_TimeOfDay} {!$User.FirstName}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Welcome</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+</Flow>

@@ -1,0 +1,18 @@
+<apex:page lightningStylesheets="true" showHeader="false">
+    <apex:includeLightning />
+    <div id="deskQueueLocation" />
+
+    <script>
+        $Lightning.use("c:DeskQueueWrapper", function() {
+            $Lightning.createComponent("c:deskQueue",
+                {
+                    recordId : '{!$CurrentPage.parameters.c__locationId}'
+                },
+                "deskQueueLocation", // the Id of div tag where your component will be rendered
+                function(cmp) {
+                    console.log('Calling the LWC Component');
+                });
+        });
+    </script>
+    <!--lightning:container src="c/deskQueue" attributes="{ location: 'Service_Desk_Head_Office' }" /-->
+</apex:page>

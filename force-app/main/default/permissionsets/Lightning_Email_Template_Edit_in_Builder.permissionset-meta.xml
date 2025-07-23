@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permission Set to enable users to use the &#39;Edit in Builder&#39; drag and drop feature in Lightning Email Templates</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Lightning Email Template Edit in Builder</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AccessContentBuilder</name>
+    </userPermissions>
+</PermissionSet>

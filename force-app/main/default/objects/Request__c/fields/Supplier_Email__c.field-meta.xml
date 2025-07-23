@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Supplier_Email__c</fullName>
+    <description>This field is a temporary field for the name plate proces in phase 1 because we don&#39;t want supplier / creditor accounts in Salesforce in phase 1.</description>
+    <externalId>false</externalId>
+    <formula>CASE(
+Supplier_Name_Plate__c,
+&quot;Kellers IJzerhandel B.V.&quot;, &quot;woonstad@keller.nl&quot;,
+&quot;Het Zuider Sleutelhuis B.V.&quot;, &quot;woonstad@zuidersleutelhuis.nl&quot;,
+&quot;IJzerhandel Overschie&quot;, &quot;info@ijzerhandeloverschie.nl&quot;,
+&quot;Weijntjes Hang- En Sluitwerk&quot;, &quot;info@weijntjes.nl&quot;,
+&quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Supplier Email</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

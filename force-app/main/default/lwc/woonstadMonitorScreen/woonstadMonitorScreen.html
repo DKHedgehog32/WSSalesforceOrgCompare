@@ -1,0 +1,36 @@
+<template>
+    <div class="slds-p-around_medium slds-card">
+        <h1 class="slds-text-heading_large slds-m-bottom_medium slds-text-align_center">
+            Woonstad Wachtruimte
+        </h1>
+
+        <!-- List of currently accepted visitors -->
+        <template if:true={acceptedVisitors.length}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout">
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Balie</th>
+                        <th>Tijd</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={acceptedVisitors} for:item="visitor">
+                        <tr key={visitor.caseId}>
+                            <td>{visitor.name}</td>
+                            <td>{visitor.desk}</td>
+                            <td>{visitor.time}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+        <template if:false={acceptedVisitors.length}>
+            <p class="slds-text-align_center">Nog geen bezoekers opgeroepen.</p>
+        </template>
+
+        <!-- Hidden audio for sound trigger -->
+        <audio id="acceptSound" src={soundFileUrl}></audio>
+    </div>
+</template>

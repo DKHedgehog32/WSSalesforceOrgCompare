@@ -1,0 +1,71 @@
+<template>
+    <div class="kiosk-form-container">
+        <!-- Logo linksboven -->
+        <div class="logo-top-left">
+            <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+        </div>
+
+        <!-- Invoervelden -->
+        <div class="form-card">
+            <!-- Postcode -->
+            <lightning-input
+                label="Postcode (bijv. 1234AB)"
+                value={postalCode}
+                onchange={handlePostalCodeChange}>
+            </lightning-input>
+
+            <!-- Huisnummer -->
+            <lightning-input
+                label="Huisnummer"
+                value={houseNumber}
+                onchange={handleHouseNumberChange}>
+            </lightning-input>
+
+            <!-- Geboortedatum -->
+            <lightning-input
+                type="date"
+                label="Geboortedatum"
+                value={birthdate}
+                onchange={handleBirthdateChange}>
+            </lightning-input>
+
+            <!-- Zoekknop -->
+            <div class="submit-button">
+                <lightning-button label="Zoeken" onclick={handleAddressSearch}></lightning-button>
+            </div>
+
+            <!-- Meerdere adressen gevonden -->
+            <template if:true={multipleAddresses}>
+                <p style="grid-column: span 2;">Meerdere adressen gevonden. Kies één:</p>
+                <template for:each={addressOptions} for:item="addr">
+                    <div key={addr.Id} style="grid-column: span 2;">
+                        <lightning-input 
+                            type="radio" 
+                            name="addressSelect" 
+                            label={addr.Name} 
+                            value={addr.Id} 
+                            onchange={handleAddressSelect}>
+                        </lightning-input>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Openstaande dossiers tonen -->
+            <template if:true={hasCases}>
+                <p style="grid-column: span 2;">Openstaande dossiers:</p>
+                <lightning-datatable
+                    key-field="caseId"
+                    data={cases}
+                    columns={columns}
+                    hide-checkbox-column
+                    style="grid-column: span 2;">
+                </lightning-datatable>
+            </template>
+
+            <!-- Foutmelding -->
+            <template if:true={errorMessage}>
+                <div class="error" style="grid-column: span 2; color: red;">{errorMessage}</div>
+            </template>
+        </div>
+    </div>
+</template>

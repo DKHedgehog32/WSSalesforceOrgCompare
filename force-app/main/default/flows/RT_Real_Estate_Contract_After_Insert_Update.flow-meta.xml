@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <description>Record-Triggered Flow that triggers after an update (for instance, a change in Active To date) or insert (when Wocas inserts a new Contract).</description>
+    <environments>Default</environments>
+    <interviewLabel>RT - Real Estate Contract - After Insert/Update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>RT - Real Estate Contract - After Insert/Update</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_The_Account_Label_From_Its_Real_Estate_Contracts</targetReference>
+        </connector>
+        <object>Real_Estate_Contract__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <subflows>
+        <description>The Account may have multiple Real Estate Contracts. This subflow searches for all Real Estate Contracts, determines if it is either Woonstad, Stadswonen, both or neither and fills the Account Label based on that.</description>
+        <name>Get_The_Account_Label_From_Its_Real_Estate_Contracts</name>
+        <label>Get The Account Label From Its Real Estate Contracts</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <flowName>AL_Get_Account_Label_From_Real_Estate_Contract</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

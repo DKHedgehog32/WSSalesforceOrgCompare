@@ -1,0 +1,14 @@
+.logo-header {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 150px;
+    z-index: 10;
+    opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+    .logo-header {
+        width: 100px;
+    }
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <description>SFI-599 Automated search of Account and Case if possible</description>
+    <environments>Default</environments>
+    <interviewLabel>RT - Service Desk Registration {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>RT - Service Desk Registration - After Insert</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Subflow_Service_Desk_Registration_Handler</targetReference>
+        </connector>
+        <object>Service_Desk_Registration__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>SFI-600 The platform event is needed to update the LWC which shows the queue at the service desk.</description>
+        <name>Create_Service_Desk_Registration_Queue_Update</name>
+        <label>Create Service Desk Registration Queue Update</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <flowName>AL_Create_Service_Desk_Registration_Queue_Update</flowName>
+        <inputAssignments>
+            <name>VART_Service_Desk_Registration_Location</name>
+            <value>
+                <elementReference>$Record.Service_Desk_Physical_Location__c</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>In the handler we handle the different scenarios that we have to link the Service Desk Registration to the correct account and / or case.</description>
+        <name>Subflow_Service_Desk_Registration_Handler</name>
+        <label>Service Desk Registration Handler</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Create_Service_Desk_Registration_Queue_Update</targetReference>
+        </connector>
+        <flowName>AL_Service_Desk_Registration_Handler</flowName>
+        <inputAssignments>
+            <name>VarR_Service_Desk_Registration</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>$Record</assignToReference>
+            <name>VarR_Service_Desk_Registration</name>
+        </outputAssignments>
+    </subflows>
+</Flow>

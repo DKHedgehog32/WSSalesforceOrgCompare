@@ -1,0 +1,130 @@
+.kiosk-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3rem;
+    background-color: #ffffff;
+    min-height: 100vh;
+    overflow: hidden;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.kiosk-form-container h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #001b40;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+}
+
+.step-indicator {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-self: flex-start;
+}
+
+.step {
+    font-size: 1rem;
+    color: #3f6f8f;
+    background-color: #e9edf2;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 500;
+}
+
+.step.active {
+    background-color: #0061cd;
+    color: #ffffff;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+}
+
+.search-bar lightning-input {
+    flex: 1;
+}
+
+.search-bar lightning-button-icon {
+    margin-top: 1.5rem;
+}
+
+.choice-buttons {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.option-card {
+    background-color: #85e3f9;
+    padding: 3rem 4rem;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #001b40;
+    border-radius: 0.5rem;
+    min-width: 200px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.option-card:hover {
+    transform: scale(1.03);
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 2rem;
+}
+
+/* --- Custom "Volgende" Button Styling --- */
+.custom-next-button {
+    display: flex;
+    align-items: center;
+    background-color: #85e3f9;
+    color: #001b40;
+    padding: 0.75rem 1.25rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-next-button:hover {
+    background-color: #7bd8f0;
+}
+
+.custom-next-button .label {
+    margin-right: 0.75rem;
+    font-size: 1rem;
+}
+
+.custom-next-button .icon-circle {
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 0.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.arrow-icon {
+    --slds-c-icon-color-foreground: #001b40;
+}

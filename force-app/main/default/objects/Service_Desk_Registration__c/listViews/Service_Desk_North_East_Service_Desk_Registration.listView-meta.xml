@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Desk_North_East_Service_Desk_Registration</fullName>
+    <filterScope>Queue</filterScope>
+    <label>Servicebalie Noord &amp; Oost</label>
+    <queue>Service_Desk_North_East</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

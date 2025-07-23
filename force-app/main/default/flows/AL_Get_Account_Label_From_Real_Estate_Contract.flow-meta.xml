@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>Assign for each Contract Party the trimmed value to the collection variable.</description>
+        <name>Assign_Trimmed_Value</name>
+        <label>Assign Trimmed Value</label>
+        <locationX>600</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>varT_TrimmedContractPartyNameList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>forT_TrimContractParty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Through_Contract_Party_Names</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check if Stadswonen Label is also present.</description>
+        <name>Check_For_Stadswonen_Label</name>
+        <label>Check For Stadswonen Label</label>
+        <locationX>50</locationX>
+        <locationY>1298</locationY>
+        <defaultConnector>
+            <targetReference>Update_Account_With_Woonstad_Value</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Stadswonen</defaultConnectorLabel>
+        <rules>
+            <name>Also_Stadswonen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varT_TrimmedContractPartyNameList</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Stadswonen</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Update_Account_With_Woonstad_Stadswonen_Value</targetReference>
+            </connector>
+            <label>Also Stadswonen</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if Woonstad Label is also present.</description>
+        <name>Check_For_Woonstad_Label</name>
+        <label>Check For Woonstad Label</label>
+        <locationX>578</locationX>
+        <locationY>1298</locationY>
+        <defaultConnector>
+            <targetReference>Update_Account_With_Stadswonen_Value</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Woonstad</defaultConnectorLabel>
+        <rules>
+            <name>Also_Woonstad</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varT_TrimmedContractPartyNameList</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Stadswonen</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Account_With_Woonstad_Stadswonen_Value</targetReference>
+            </connector>
+            <label>Also Woonstad</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If no Contract Lines are found, the flow should end in order to prevent query errors. If the Real Estate Contract has no Contract Lines, the Label cannot be determined.</description>
+        <name>Contract_Lines_Found</name>
+        <label>Contract Lines Found?</label>
+        <locationX>875</locationX>
+        <locationY>242</locationY>
+        <defaultConnectorLabel>No Contract Lines</defaultConnectorLabel>
+        <rules>
+            <name>Contract_Lines</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Contract_Lines_From_Real_Estate_Contract</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account_Contract_Lines</targetReference>
+            </connector>
+            <label>Contract Lines</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Based on the Contract Party, determine if the Account is either Label Woonstad, Stadswonen, both or neither.</description>
+        <name>Determine_Account_Label</name>
+        <label>Determine Account Label</label>
+        <locationX>512</locationX>
+        <locationY>1190</locationY>
+        <defaultConnectorLabel>Neither</defaultConnectorLabel>
+        <rules>
+            <name>Woonstad</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varT_TrimmedContractPartyNameList</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Woonstad</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_For_Stadswonen_Label</targetReference>
+            </connector>
+            <label>Woonstad</label>
+        </rules>
+        <rules>
+            <name>Stadswonen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varT_TrimmedContractPartyNameList</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Stadswonen</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_For_Woonstad_Label</targetReference>
+            </connector>
+            <label>Stadswonen</label>
+        </rules>
+    </decisions>
+    <description>Retrieve the Account Label from the triggering Real Estate Contract</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>forT_TrimContractParty</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!Loop_Through_Contract_Party_Names.Name}, FIND(&quot; &quot;, {!Loop_Through_Contract_Party_Names.Name}) - 1)</expression>
+    </formulas>
+    <interviewLabel>AL - {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AL - Get Account Label From Real Estate Contract</label>
+    <loops>
+        <description>The retrieved Contract Parties need to be trimmed to only display Woonstad or Stadswonen.</description>
+        <name>Loop_Through_Contract_Party_Names</name>
+        <label>Loop Through Contract Party Names</label>
+        <locationX>512</locationX>
+        <locationY>890</locationY>
+        <collectionReference>Get_Contract_Party_Account_Name</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Trimmed_Value</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Determine_Account_Label</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Find all Contract Lines that are associated with the Account. This can be more than just the triggering Real Estate Contract.</description>
+        <name>Get_Account_Contract_Lines</name>
+        <label>Get Account Contract Lines</label>
+        <locationX>512</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Extract_Real_Estate_Contract_From_Contract_Lines</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contract_Lines_From_Real_Estate_Contract.Account__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contract_Line__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the latest Contract Line from the Real Estate Contract</description>
+        <name>Get_Contract_Lines_From_Real_Estate_Contract</name>
+        <label>Get Contract Lines From Real Estate Contract</label>
+        <locationX>875</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Contract_Lines_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Real_Estate_Contract__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contract_Line__c</object>
+        <sortField>Active_from_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the Contract Party&#39;s Account Name (Woonstad or Stadswonen)</description>
+        <name>Get_Contract_Party_Account_Name</name>
+        <label>Get Contract Party Account Name</label>
+        <locationX>512</locationX>
+        <locationY>782</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Through_Contract_Party_Names</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Collect_Contract_Party_From_Real_Estate_Contract</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>From the collection variable list, retrieve the Real Estate Contract records. These can be used to get the Contract Party (Woonstad or Stadswonen).</description>
+        <name>Get_Related_Real_Estate_Contracts</name>
+        <label>Get Related Real Estate Contracts</label>
+        <locationX>512</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Collect_Contract_Party_From_Real_Estate_Contract</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Extract_Real_Estate_Contract_From_Contract_Lines</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Real_Estate_Contract__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the Account of the Real Estate Contract that triggered the flow to display the relevant Label.</description>
+        <name>Update_Account_With_Stadswonen_Value</name>
+        <label>Update Account With Stadswonen Value</label>
+        <locationX>710</locationX>
+        <locationY>1406</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contract_Lines_From_Real_Estate_Contract.Account__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Label__c</field>
+            <value>
+                <stringValue>Stadswonen</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Account of the Real Estate Contract that triggered the flow to display the relevant Label.</description>
+        <name>Update_Account_With_Woonstad_Stadswonen_Value</name>
+        <label>Update Account With Woonstad &amp; Stadswonen Value</label>
+        <locationX>446</locationX>
+        <locationY>1406</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contract_Lines_From_Real_Estate_Contract.Account__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Label__c</field>
+            <value>
+                <stringValue>Woonstad &amp; Stadswonen</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Account of the Real Estate Contract that triggered the flow to display the relevant Label.</description>
+        <name>Update_Account_With_Woonstad_Value</name>
+        <label>Update Account With Woonstad Value</label>
+        <locationX>182</locationX>
+        <locationY>1406</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Administration_Id__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contract_Lines_From_Real_Estate_Contract.Account__c</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Label__c</field>
+            <value>
+                <stringValue>Woonstad</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>749</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Contract_Lines_From_Real_Estate_Contract</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+    <transforms>
+        <description>For each Real Estate Contract, the Contract Party should be added to a collection variable.</description>
+        <name>Collect_Contract_Party_From_Real_Estate_Contract</name>
+        <label>Collect Contract Party From Real Estate Contract</label>
+        <locationX>512</locationX>
+        <locationY>674</locationY>
+        <connector>
+            <targetReference>Get_Contract_Party_Account_Name</targetReference>
+        </connector>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <scale>0</scale>
+        <transformValues>
+            <transformValueActions>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_Related_Real_Estate_Contracts[$EachItem].Contract_Party__c</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+    <transforms>
+        <description>From the Contract Lines, retrieve the associated Real Estate Contracts. The Real Estate Contracts contain the Contract Party (Woonstad or Stadswonen).</description>
+        <name>Extract_Real_Estate_Contract_From_Contract_Lines</name>
+        <label>Extract Real Estate Contract From Contract Lines</label>
+        <locationX>512</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Get_Related_Real_Estate_Contracts</targetReference>
+        </connector>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <scale>0</scale>
+        <transformValues>
+            <transformValueActions>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_Account_Contract_Lines[$EachItem].Real_Estate_Contract__c</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varT_TrimmedContractPartyNameList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

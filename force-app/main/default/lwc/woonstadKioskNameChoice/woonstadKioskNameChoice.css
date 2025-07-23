@@ -1,0 +1,97 @@
+/* --- PAGE BACKGROUND --- */
+.kiosk-name-choice-container {
+    background-color: #0061cd;
+    min-height: 100vh;
+    padding-top: 12cm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* --- LOGO --- */
+.logo-top-left {
+    position: absolute;
+    top: 3cm;
+    left: 2cm;
+    z-index: 10;
+}
+.logo-top-left img {
+    width: 1000px;
+    height: auto;
+    opacity: 0.95;
+}
+
+/* --- QUESTION --- */
+.choice-question {
+    color: #ffffff;
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* --- BUTTONS SECTION --- */
+.button-section {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+.button-section lightning-button {
+    --slds-c-button-brand-color-background: #85e3f9;
+    --slds-c-button-brand-color-border: #85e3f9;
+    --slds-c-button-text-color: #3f6f8f;
+    font-size: 2rem;
+    padding: 1rem 3rem;
+    font-weight: bold;
+    border-radius: 1.5rem;
+    min-width: 300px;
+}
+
+/* --- INLINE POPUP STYLING (Like foutmelding) --- */
+.popup-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #f0f2f5;
+    padding: 3rem;
+    border-radius: 1rem;
+    width: 1200px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.popup-header {
+    font-size: 2rem;
+    color: #3f6f8f;
+    font-weight: bold;
+    text-align: center;
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.popup-input lightning-input input {
+    background-color: white !important;
+    color: black !important;
+    font-size: 1.6rem;
+    border-radius: 0.5rem;
+}

@@ -1,0 +1,58 @@
+<template>
+    <div class="kiosk-name-choice-container">
+        <!-- Logo -->
+        <div class="logo-top-left">
+            <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+        </div>
+
+        <!-- Question -->
+        <div class="choice-question">
+            Wilt u een andere naam tonen op het Balie scherm?
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-section">
+            <lightning-button
+                label="Gebruik uw eigen naam"
+                variant="brand"
+                onclick={handleOwnName}>
+            </lightning-button>
+
+            <lightning-button
+                label="Gebruik alternatieve naam"
+                variant="brand"
+                onclick={showAltNameInput}>
+            </lightning-button>
+        </div>
+
+        <!-- Inline Popup Modal (like foutmelding) -->
+        <template if:true={showModal}>
+            <section class="popup-modal">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        Vul een alternatieve naam in:
+                    </div>
+                    <div class="popup-input">
+                        <lightning-input
+                            label="Alternatieve naam"
+                            value={altName}
+                            onchange={handleAltNameChange}>
+                        </lightning-input>
+                    </div>
+                    <div class="popup-actions">
+                        <lightning-button
+                            label="Annuleren"
+                            variant="neutral"
+                            onclick={closeModal}>
+                        </lightning-button>
+                        <lightning-button
+                            label="Aanmelden"
+                            variant="brand"
+                            onclick={submitAltName}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </div>
+</template>

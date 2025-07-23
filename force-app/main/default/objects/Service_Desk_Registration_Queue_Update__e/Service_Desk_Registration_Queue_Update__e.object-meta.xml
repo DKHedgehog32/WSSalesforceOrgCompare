@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>SFI-600 This platform event is created to update the Lightning Web Component at the service desks which shows the queue of the service desk. The platform event will be created if a Service Desk Registration is created or the status is updated.</description>
+    <eventType>HighVolume</eventType>
+    <label>Service Desk Registration Queue Update</label>
+    <pluralLabel>Service Desk Registration Queue Updates</pluralLabel>
+    <publishBehavior>PublishImmediately</publishBehavior>
+</CustomObject>

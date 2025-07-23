@@ -1,0 +1,43 @@
+<template>
+    <div class="kiosk-wrapper">
+        <!-- Start Screen -->
+        <template if:true={showStart}>
+            <c-woonstad-kiosk-start-screen
+                onexistingselected={handleExisting}
+                onnewvisitselected={handleNewVisit}>
+            </c-woonstad-kiosk-start-screen>
+        </template>
+
+        <!-- New Visit Form -->
+        <template if:true={showForm}>
+            <c-woonstad-kiosk-form onsubmitform={handleFormSubmit}></c-woonstad-kiosk-form>
+        </template>
+
+        <!-- Name Choice Screen -->
+        <template if:true={showNameChoice}>
+            <c-woonstad-kiosk-name-choice
+                visitor={visitorData}
+                onnamechosen={handleNameChoice}>
+            </c-woonstad-kiosk-name-choice>
+        </template>
+
+        <!-- Existing Case Flow -->
+        <template if:true={showExistingCase}>
+            <c-woonstad-kiosk-existing-case
+                onmaxaddresssearchretries={handleTooManyRetries}
+                onaccountmatched={handleValidCase}>
+            </c-woonstad-kiosk-existing-case>
+        </template>
+
+        <!-- Success Message -->
+        <template if:true={showSuccess}>
+            <div class="success-screen">
+                <c-woonstad-kiosk-logo class="logo"></c-woonstad-kiosk-logo>
+                <div class="message-card">
+                    <h1 class="message">Bedankt voor uw aanmelding!</h1>
+                    <p>U wordt zo snel mogelijk geholpen. U kunt plaatsnemen in de wachtruimte.</p>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

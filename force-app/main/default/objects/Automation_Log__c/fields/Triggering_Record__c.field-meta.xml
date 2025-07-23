@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Triggering_Record__c</fullName>
+    <description>This field redirects the user to the record where the error occurred.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+NOT(ISBLANK(Triggering_Record_Id__c)), 
+
+HYPERLINK(&#39;/&#39; &amp;  Triggering_Record_Id__c , &#39;Open &#39; &amp;  $Label.TriggeringRecord , &#39;_self&#39;),
+
+$Label.NoTriggeringRecordLinked
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Triggering Record</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

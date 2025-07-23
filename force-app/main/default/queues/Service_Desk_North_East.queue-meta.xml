@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Servicebalie Noord &amp; Oost</name>
+    <queueRoutingConfig>Service_Desk_Registration_Configuration</queueRoutingConfig>
+    <queueSobject>
+        <sobjectType>Service_Desk_Location__c</sobjectType>
+    </queueSobject>
+    <queueSobject>
+        <sobjectType>Service_Desk_Registration__c</sobjectType>
+    </queueSobject>
+</Queue>

@@ -1,0 +1,48 @@
+.kiosk-container {
+    background-color: #0061cd;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Position logo 3cm from the top and 2cm from the left */
+.logo-top-left {
+    position: absolute;
+    top: 3cm;
+    left: 2cm;
+    z-index: 10;
+}
+
+.logo-top-left img {
+    width: 1000px;
+    height: auto;
+    opacity: 0.95;
+}
+
+
+/* Align buttons horizontally */
+.button-wrapper {
+    display: flex;
+    flex-direction: row; 
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+}
+
+/* Button Styling */
+lightning-button {
+    --slds-c-button-brand-color-background: #85e3f9;
+    --slds-c-button-brand-color-border: #85e3f9;
+    --slds-c-button-text-color: #3f6f8f;
+    font-size: 1.5rem;
+    width: 600px;
+    height: 4rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    white-space: normal;
+}

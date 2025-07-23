@@ -1,0 +1,42 @@
+<template>
+    <div class="kiosk-form-container">
+        <h1>Nieuwe klant aanmaken</h1>
+
+        <div class="step-indicator">
+            <span class="step active">1 Zoek de klant</span>
+            <span class="step">2 Algemene gegevens</span>
+            <span class="step">3 Adresgegevens</span>
+            <span class="step">4 Valideren</span>
+        </div>
+
+        <div class="search-bar">
+            <lightning-input type="search"
+                             placeholder="Zoek hier of de klant of bedrijf al bestaat"
+                             value={searchTerm}
+                             onchange={handleSearchChange}>
+            </lightning-input>
+            <lightning-button-icon icon-name="utility:search" onclick={handleSearch}></lightning-button-icon>
+        </div>
+
+        <div class="choice-buttons">
+            <div class="option-card" onclick={handleCreateCompany}>Bedrijf aanmaken</div>
+            <div class="option-card" onclick={handleCreateCustomer}>Klant aanmaken</div>
+        </div>
+
+        <div class="navigation">
+            <lightning-button variant="base" label="Annuleren" onclick={handleCancel}></lightning-button>
+
+            <div class="custom-next-button" onclick={handleNext}>
+                <span class="label">Volgende</span>
+                <span class="icon-circle">
+                    <lightning-icon
+                        icon-name="utility:chevronright"
+                        size="x-small"
+                        alternative-text="Volgende"
+                        class="arrow-icon">
+                    </lightning-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+</template>

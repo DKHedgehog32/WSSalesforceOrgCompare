@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>SFI-600 The location should be passed in VART_Service_Desk_Registration_Location outside the Flow.</description>
+        <name>Service_Desk_Registration_Queue_Update</name>
+        <label>Service Desk Registration Queue Update</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignmentItems>
+            <assignToReference>VARR_Service_Desk_Registration_Queue_Update.Service_Desk_Location__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>VART_Service_Desk_Registration_Location</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>CREATE_Service_Desk_Registration_Queue_Update</targetReference>
+        </connector>
+    </assignments>
+    <description>SFI-600 This platform event is needed to update the LWC queue of the locations.</description>
+    <environments>Default</environments>
+    <interviewLabel>AL - {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AL - Create Service Desk Registration Queue Update</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>SFI-600 The platform event is needed to update the LWC which shows the queue at the service desk.</description>
+        <name>CREATE_Service_Desk_Registration_Queue_Update</name>
+        <label>Service Desk Registration Queue Update</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <inputReference>VARR_Service_Desk_Registration_Queue_Update</inputReference>
+    </recordCreates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Service_Desk_Registration_Queue_Update</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>VARR_Service_Desk_Registration_Queue_Update</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Service_Desk_Registration_Queue_Update__e</objectType>
+    </variables>
+    <variables>
+        <name>VART_Service_Desk_Registration_Location</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

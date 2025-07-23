@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>SFI-601 - The status field is used to calculate durations of waiting and at the counter. It&#39;s also used to calculate the queue for the Visitor Screen</description>
+    <externalId>false</externalId>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Registered</fullName>
+                <default>true</default>
+                <label>🙋‍♂️ Registered</label>
+            </value>
+            <value>
+                <fullName>At The Service Desk</fullName>
+                <default>false</default>
+                <label>👩‍💻 At The Service Desk</label>
+            </value>
+            <value>
+                <fullName>Completed</fullName>
+                <default>false</default>
+                <label>☑️ Completed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

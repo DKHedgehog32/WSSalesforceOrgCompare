@@ -1,0 +1,31 @@
+<template>
+    <div class="queuecontainer">
+        <lightning-card>
+            <lightning-layout vertical-align="top" class="x-large">
+                <lightning-layout-item flexibility="auto" class="slds-box_border slds-m-around_small">
+                    <lightning-card title="Balie">
+                        <p class="slds-p-around_medium">
+                            <template for:each={atDesk} for:item="deskRecord">
+                                <lightning-tile key={deskRecord.Id} label={deskRecord.Display_Label__c} href="/not/a/real/link">
+                                    <p class="slds-truncate" title={deskRecord.Type__c}>{deskRecord.Type__c}</p>
+                                </lightning-tile>
+                            </template>
+                        </p>
+                    </lightning-card>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" class="slds-box_border slds-m-around_small">
+                    <lightning-card title="Wachtrij">
+                        <p class="slds-p-around_medium">
+                            <template for:each={records} for:item="queueRecord">
+                                <lightning-tile key={queueRecord.Id} label={queueRecord.Display_Label__c} href="/not/a/real/link">
+                                    <p class="slds-truncate" title={queueRecord.Type__c}>{queueRecord.Type__c}</p>
+                                </lightning-tile>
+                            </template>
+                        </p>
+                    </lightning-card>
+                </lightning-layout-item>
+            </lightning-layout>
+            <p slot="footer" class="slds-text-heading_medium">Woonstad Rotterdam</p>
+        </lightning-card>
+    </div>
+</template>

@@ -1,0 +1,80 @@
+<template>
+    <div class="kiosk-form-container">
+        <!-- Woonstad Logo top-left -->
+        <div class="logo-top-left">
+            <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+        </div>
+
+        <!-- Form Box -->
+        <div class="form-card">
+            <!-- Visit Reason -->
+            <lightning-combobox
+                label="Reden bezoek"
+                data-id="visitReason"
+                value={visitReason}
+                options={visitOptions}
+                onchange={handleChange}>
+            </lightning-combobox>
+
+            <!-- Voornaam -->
+            <lightning-input
+                label="Voornaam"
+                data-id="firstName"
+                value={firstName}
+                onchange={handleChange}>
+            </lightning-input>
+
+            <!-- Achternaam -->
+            <lightning-input
+                label="Achternaam"
+                data-id="lastName"
+                value={lastName}
+                onchange={handleChange}>
+            </lightning-input>
+
+            <!-- Telefoon of e-mailadres -->
+            <lightning-input
+                label="Telefoon of e-mailadres"
+                data-id="contactInfo"
+                value={contactInfo}
+                onchange={handleChange}>
+            </lightning-input>
+
+            <!-- Opmerkingen -->
+            <lightning-textarea
+                label="Opmerkingen"
+                data-id="notes"
+                value={notes}
+                onchange={handleChange}>
+            </lightning-textarea>
+
+            <!-- Button -->
+            <div class="submit-button">
+                <lightning-button
+                    label="Aanmelden"
+                    variant="brand"
+                    class="test-button"
+                    onclick={handleSubmit}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal shown if no required fields -->
+    <template if:true={showErrorModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Foutmelding</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Vul minimaal één van de volgende velden in: voornaam, achternaam of contactgegevens.</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Sluiten" onclick={closeErrorModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

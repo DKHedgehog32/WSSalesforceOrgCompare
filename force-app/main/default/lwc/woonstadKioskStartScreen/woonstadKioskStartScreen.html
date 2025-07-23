@@ -1,0 +1,26 @@
+<template>
+    <div class="kiosk-container">
+        <!-- Logo top-left -->
+        <div class="logo-header">
+            <img src={logoUrl} alt="Woonstad Rotterdam Logo" />
+        </div>
+
+        <!-- Centered buttons -->
+        <div class="button-wrapper">
+            <div class="button-container">
+                <lightning-button 
+                    label="Ik kom voor een bestaand dossier" 
+                    variant="brand" 
+                    onclick={handleExistingClick}>
+                </lightning-button>
+            </div>
+            <div class="button-container">
+                <lightning-button 
+                    label="Ik kom voor een nieuw bezoek" 
+                    variant="brand" 
+                    onclick={handleNewClick}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+</template>
