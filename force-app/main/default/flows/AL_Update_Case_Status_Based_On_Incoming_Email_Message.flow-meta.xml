@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Asynchronously clone the Case, Email Message and Content Document Links</description>
+        <name>Clone_Case_EmailMessage_and_ContentDocumentLinks</name>
+        <label>Clone Case, EmailMessage and ContentDocumentLinks</label>
+        <locationX>1634</locationX>
+        <locationY>566</locationY>
+        <actionName>EmailCaseCloneInvocable</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>caseId</name>
+            <value>
+                <elementReference>Get_Case_Of_Email_Message.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailMessageId</name>
+            <value>
+                <elementReference>varR_EmailMessage.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>EmailCaseCloneInvocable</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <description>Action to send the custom notification to the case owner related with the case that is &#39;Response Received&#39; by a new incoming message.</description>
+        <name>Send_Case_Response_Received_Notification</name>
+        <label>Send Case Response Received Notification</label>
+        <locationX>1106</locationX>
+        <locationY>1274</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_for_Received_Email.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>varT_Recipient</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Case Alert Antwoord Ontvangen - {!varR_EmailMessage.Parent.CaseNumber}</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>Case {!varR_EmailMessage.Parent.CaseNumber} heeft een nieuw ontvangen mail gerelateerd aan de case vanuit de case indiener of case betrokkene zoals een leverancier.</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>varR_EmailMessage.ParentId</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+    </actionCalls>
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <description>Assignment of the correct notifcation recipient based on the case ownership of that case.</description>
+        <name>Assign_User_ID_of_Flow_to_Variable</name>
+        <label>Assign User ID of Flow to Variable</label>
+        <locationX>1106</locationX>
+        <locationY>1166</locationY>
+        <assignmentItems>
+            <assignToReference>varT_Recipient</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varR_EmailMessage.Parent.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Send_Case_Response_Received_Notification</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>To determine if the Case Owner is still a Queue or a Salesforce user</description>
+        <name>Case_Owner_is_Queue</name>
+        <label>Case Owner is Queue</label>
+        <locationX>974</locationX>
+        <locationY>950</locationY>
+        <defaultConnector>
+            <targetReference>Get_Custom_Notification_for_Received_Email</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Case_Owner_is_Queue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_EmailMessage.Parent.OwnerId</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>&quot;3d00GV&quot;</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Yes, Case Owner is Queue</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Decision to determine if it is a new incoming email message.</description>
+        <name>New_Incoming_Email_Message</name>
+        <label>New Incoming Email Message</label>
+        <locationX>1700</locationX>
+        <locationY>134</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Incoming_Email_Message</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_EmailMessage.Incoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Case_Of_Email_Message</targetReference>
+            </connector>
+            <label>Incoming Email Message</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If the current Case status is Waiting on Customer, Waiting on Third Party or External, the Case status should become Response Received. If the current Case status is Closed, the status should be Reopened or a new Case should be opened. This way, the contact center employee can again accept the Case from Omni-channel.</description>
+        <name>What_Is_The_Case_Status</name>
+        <label>What Is The Case Status</label>
+        <locationX>974</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Waiting_On_Customer</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Waiting on Customer</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Adjust_Status_to_Response_Received</targetReference>
+            </connector>
+            <label>Waiting On Customer</label>
+        </rules>
+        <rules>
+            <name>Waiting_on_Third_Party</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Waiting on Third Party</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Adjust_Status_to_Response_Received</targetReference>
+            </connector>
+            <label>Waiting on Third Party</label>
+        </rules>
+        <rules>
+            <name>External</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>External</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Adjust_Status_to_Response_Received</targetReference>
+            </connector>
+            <label>External</label>
+        </rules>
+        <rules>
+            <name>Closed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed-Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed-Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>When_Was_The_Case_Closed</targetReference>
+            </connector>
+            <label>Closed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>When was the associated Case closed?</description>
+        <name>When_Was_The_Case_Closed</name>
+        <label>When Was The Case Closed</label>
+        <locationX>1370</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Clone_Case_EmailMessage_and_ContentDocumentLinks</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>More Than Two Week Ago</defaultConnectorLabel>
+        <rules>
+            <name>Two_Weeks_Ago_Or_Less</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Of_Email_Message.ClosedDate</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>varF_TwoWeeksAgo</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Adjust_Status_to_Reopened</targetReference>
+            </connector>
+            <label>Two Weeks Ago Or Less</label>
+        </rules>
+    </decisions>
+    <description>Update the Case status when a customer or supplier responds to an email message that was sent from the Case.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>The current Date and Time</description>
+        <name>varF_Now</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
+        <description>The calculated date of two weeks ago</description>
+        <name>varF_TwoWeeksAgo</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW() -14</expression>
+    </formulas>
+    <interviewLabel>AL - Update Case Status Based On Incoming Email Message {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AL - Update Case Status Based On Incoming Email Message</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Retrieve original Case related to the Email Message</description>
+        <name>Get_Case_Of_Email_Message</name>
+        <label>Get Case Of Email Message</label>
+        <locationX>974</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>What_Is_The_Case_Status</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varR_EmailMessage.ParentId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>To get the custom notification in order to inform the case owner later</description>
+        <name>Get_Custom_Notification_for_Received_Email</name>
+        <label>Get Custom Notification for Received Email</label>
+        <locationX>1106</locationX>
+        <locationY>1058</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_User_ID_of_Flow_to_Variable</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Response_Received_Case_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update Case record with status based on received message to status &#39;Reopened&#39;.</description>
+        <name>Adjust_Status_to_Reopened</name>
+        <label>Adjust Status to Reopened</label>
+        <locationX>1106</locationX>
+        <locationY>566</locationY>
+        <connector>
+            <targetReference>Case_Owner_is_Queue</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case_Of_Email_Message.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Case_Reopened_Date_and_Time__c</field>
+            <value>
+                <elementReference>varF_Now</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Case_Reopened__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Reopened</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update Case record with status based on received message to status &#39;Response Received&#39;</description>
+        <name>Adjust_Status_to_Response_Received</name>
+        <label>Adjust Status to Response Received</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Case_Owner_is_Queue</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Case_Of_Email_Message.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Response Received</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <start>
+        <locationX>1574</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>New_Incoming_Email_Message</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Publish flow fault</description>
+        <name>Publish_Fault_Event</name>
+        <label>Publish Fault Event</label>
+        <locationX>2162</locationX>
+        <locationY>350</locationY>
+        <flowName>AL_Publish_Flow_Fault_event</flowName>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>flowContext</name>
+            <value>
+                <stringValue>AL_Update_Case_Status_Based_On_Incoming_Email_Message</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>flowGuid</name>
+            <value>
+                <elementReference>$Flow.InterviewGuid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>userId</name>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <name>currentItemFromSourceCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>CaseFeed</objectType>
+    </variables>
+    <variables>
+        <description>Input variable Email Message to trigger the flow</description>
+        <name>varR_EmailMessage</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>EmailMessage</objectType>
+    </variables>
+    <variables>
+        <name>varT_Recipient</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
