@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approval_by__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Approval process cannot select the record owner as approver. Look-up field on the User object gives the user the opportunity to select the record owner, and if necessary, other users to assess the changes made to a Knowledge article.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Who is authorized to approve changes to this Knowledge article?</inlineHelpText>
+    <label>Approval by</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Knowledge</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>
