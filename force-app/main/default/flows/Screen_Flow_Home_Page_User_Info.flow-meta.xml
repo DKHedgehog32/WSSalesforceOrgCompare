@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>For each Queue, assign it to the new collection variable.</description>
+        <name>Assign_The_Queue_To_The_List</name>
+        <label>Assign The Queue To The List</label>
+        <locationX>264</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>varT_FormattedQueueNames</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>FormattedQueueName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Through_Queue_Names</targetReference>
+        </connector>
+    </assignments>
+    <description>Displays User information on the Contact Center Home Page</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>forT_DisplayQueueMessage</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  ISBLANK({!varT_FormattedQueueNames}),
+  &quot;Je bent niet toegewezen aan een wachtrij&quot;,
+  &quot;Vandaag ben je toegewezen aan wachtrij:&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>forT_TimeOfDay</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 6 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 12, &quot;Goedemorgen&quot;,
+   IF(
+      VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 12 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 18, &quot;Goedemiddag&quot;,
+      IF(
+         VALUE(MID(TEXT(NOW()), 12, 2)) &gt;= 18 &amp;&amp; VALUE(MID(TEXT(NOW()), 12, 2)) &lt; 24, &quot;Goedenavond&quot;,
+         &quot;Welterusten&quot;
+      )
+   )
+)</expression>
+    </formulas>
+    <interviewLabel>Screen Flow - Home Page User Info {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Screen Flow - Home Page User Info</label>
+    <loops>
+        <description>Loop through the Queue name collection variable to display a list of Queues.</description>
+        <name>Loop_Through_Queue_Names</name>
+        <label>Loop Through Queue Names</label>
+        <locationX>176</locationX>
+        <locationY>566</locationY>
+        <collectionReference>Retrieve_Queue_Names</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_The_Queue_To_The_List</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>User_Information</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Retrieve the Groups that are associated with the GroupMember records</description>
+        <name>Get_Associated_Groups</name>
+        <label>Get Associated Groups</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Retrieve_Queue_Names</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>Retrieve_GroupIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Queue</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>QueueRoutingConfigId</field>
+            <operator>NotEqualTo</operator>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the User&#39;s GroupMember assignments to show the Queues he or she is working on.</description>
+        <name>Get_GroupMember_Assignments</name>
+        <label>Get GroupMember Assignments</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Retrieve_GroupIds</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>UserOrGroupId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>GroupMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <name>User_Information</name>
+        <label>User Information</label>
+        <locationX>176</locationX>
+        <locationY>866</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>DisplayUserInformation</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 18px; color: rgb(12, 34, 74); background-color: rgb(255, 255, 255);&quot;&gt;{!forT_TimeOfDay}, {!$User.FirstName}!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!forT_DisplayQueueMessage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;{!varT_FormattedQueueNames}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_GroupMember_Assignments</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>FormattedQueueName</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;li&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px; color: black;&quot;&gt;{!Loop_Through_Queue_Names}&lt;/span&gt;&lt;/p&gt;&lt;/li&gt;</text>
+    </textTemplates>
+    <transforms>
+        <description>Retrieve the GroupIds from the GroupMember records</description>
+        <name>Retrieve_GroupIds</name>
+        <label>Retrieve GroupIds</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <connector>
+            <targetReference>Get_Associated_Groups</targetReference>
+        </connector>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <scale>0</scale>
+        <transformValues>
+            <transformValueActions>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_GroupMember_Assignments[$EachItem].GroupId</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+    <transforms>
+        <description>Retrieve the assigned Queue names of the User</description>
+        <name>Retrieve_Queue_Names</name>
+        <label>Retrieve Queue Names</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>Loop_Through_Queue_Names</targetReference>
+        </connector>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <scale>0</scale>
+        <transformValues>
+            <transformValueActions>
+                <transformType>Map</transformType>
+                <value>
+                    <elementReference>Get_Associated_Groups[$EachItem].Name</elementReference>
+                </value>
+            </transformValueActions>
+        </transformValues>
+    </transforms>
+    <variables>
+        <name>varT_FormattedQueueNames</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

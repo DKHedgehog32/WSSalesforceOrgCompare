@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Woonstad</name>
+    <queueMembers>
+        <users>
+            <user>carita.burleson@woonstadrotterdam.nl</user>
+            <user>damian.van.beveren@woonstadrotterdam.nl</user>
+            <user>gail.verdonk@woonstadrotterdam.nl</user>
+            <user>lieke.grendel@woonstadrotterdam.nl</user>
+            <user>matthew.van.goch@woonstadrotterdam.nl</user>
+            <user>rob.driessen@woonstadrotterdam.nl</user>
+            <user>sharon.westphal@woonstadrotterdam.nl</user>
+        </users>
+    </queueMembers>
+    <queueRoutingConfig>Case_Configuration</queueRoutingConfig>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>

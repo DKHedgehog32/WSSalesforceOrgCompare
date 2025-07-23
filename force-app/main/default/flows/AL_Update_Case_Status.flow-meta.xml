@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>Assign the corresponding Question Status</description>
+        <name>Assign_Question_Status</name>
+        <label>Assign Question Status</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Case.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Wocas_Case_Status_Custom_Metadata_Type_Value.Case_Question_Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Case_With_Closed_Status</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the corresponding Request Status</description>
+        <name>Assign_Request_Status</name>
+        <label>Assign Request Status</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Case.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Wocas_Case_Status_Custom_Metadata_Type_Value.Case_Request_Status__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Case_With_Closed_Status</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Determine_Case_Record_Type</name>
+        <label>Determine Case Record Type</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>Update_Case_With_Closed_Status</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Question</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_Case.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Question</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Question_Status</targetReference>
+            </connector>
+            <label>Question</label>
+        </rules>
+        <rules>
+            <name>Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_Case.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Request_Status</targetReference>
+            </connector>
+            <label>Request</label>
+        </rules>
+    </decisions>
+    <description>Update the Case status based on the Custom Metadata Type &quot;Wocas Case Status&quot;</description>
+    <environments>Default</environments>
+    <interviewLabel>AL - Update Case Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AL - Update Case Status</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get the right value from the custom metadata type</description>
+        <name>Get_Wocas_Case_Status_Custom_Metadata_Type_Value</name>
+        <label>Get Wocas Case Status Custom Metadata Type Value</label>
+        <locationX>314</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Determine_Case_Record_Type</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Wocas_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varR_Case.External_Status__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Wocas_Case_Status__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the Case with the Closed Status</description>
+        <name>Update_Case_With_Closed_Status</name>
+        <label>Update Case With Closed Status</label>
+        <locationX>314</locationX>
+        <locationY>542</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Publish_Fault_Event</targetReference>
+        </faultConnector>
+        <inputReference>varR_Case</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Wocas_Case_Status_Custom_Metadata_Type_Value</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Publishes the fault</description>
+        <name>Publish_Fault_Event</name>
+        <label>Publish Fault Event</label>
+        <locationX>1018</locationX>
+        <locationY>242</locationY>
+        <flowName>AL_Publish_Flow_Fault_event</flowName>
+        <inputAssignments>
+            <name>faultMessage</name>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>flowContext</name>
+            <value>
+                <stringValue>AL_Update_Case_Status</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>flowGuid</name>
+            <value>
+                <elementReference>$Flow.InterviewGuid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>userId</name>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>Record variable of Case as input for the flow</description>
+        <name>varR_Case</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

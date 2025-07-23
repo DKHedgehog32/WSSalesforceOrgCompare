@@ -1,0 +1,1408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>63.0</apiVersion>
+    <assignments>
+        <description>Update the default value (Question) of the varT_Case_Record_Type_Developer_Name to the found Record Type Name.</description>
+        <name>Assign_Case_Record_Type_Name</name>
+        <label>Case Record Type Name</label>
+        <locationX>534</locationX>
+        <locationY>1466</locationY>
+        <assignmentItems>
+            <assignToReference>varT_Case_Record_Type_Developer_Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Record_Type_To_Case_Type_Mapping.Case_Record_Type__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Case_Record_Type</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Case&#39;s Account and other variables</description>
+        <name>Assign_Case_Variables</name>
+        <label>Assign Case Variables</label>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Case.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Account_Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Account_Record.PersonContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.ParentId</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.CaseNumber</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.ClosedDate</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.CreatedDate</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Comments</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Retrieve_The_Account_s_Contract_Parties</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>If the Case has an existing Label, this Label is assigned to the variable to be shown in the New Case Information Screen.</description>
+        <name>Assign_Current_Case_Variables</name>
+        <label>Assign Current Case Variables</label>
+        <locationX>710</locationX>
+        <locationY>350</locationY>
+        <assignmentItems>
+            <assignToReference>varT_AccountContractParty</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Record.Label__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Case_Currently_New_Or_Assigned</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the In Progress Status to the Case</description>
+        <name>Assign_In_Progress_Status_To_Case</name>
+        <label>Assign In Progress Status To Case</label>
+        <locationX>578</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Case.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>New_Case_Information</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign all necessary Request values.</description>
+        <name>Assign_Request_Values</name>
+        <label>Assign Request Values</label>
+        <locationX>270</locationX>
+        <locationY>2090</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Request.Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varR_Case.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Request.Case__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varR_Case.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Request.Contact_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varR_Case.ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Request.Request_Origin__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Request.Request_Status__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Request.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varR_Case.Case_Reason__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Update_Request_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assignment to fill known values to the case record variable</description>
+        <name>Assign_Values_For_Case_Creation</name>
+        <label>Assign Values For Case Creation</label>
+        <locationX>666</locationX>
+        <locationY>1766</locationY>
+        <assignmentItems>
+            <assignToReference>varR_Case.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Case_Record_Type.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Type</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CaseType_Reason.topValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Case_Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CaseType_Reason.middleValue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Origin</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Case_Origin</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varR_Case.Label__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Label</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Update_New_Case_Record</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>What is the Case Record Type of the created Case? If it is a Request and the Case does not yet have a Request, a Request record is also created.</description>
+        <name>Case_Record_Type_Of_Created_Case</name>
+        <label>Case Record Type Of Created Case</label>
+        <locationX>666</locationX>
+        <locationY>1982</locationY>
+        <defaultConnector>
+            <targetReference>Success_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_Case.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Request_Values</targetReference>
+            </connector>
+            <label>Request</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>We check if the Case Type Mapping Record is Found. If the record is found we update the default value (Question) of the varT_Case_Record_Type_Developer_Name to the found Record Type Name.</description>
+        <name>Decision_Case_Type_Mapping_Found</name>
+        <label>Case Type Mapping Found?</label>
+        <locationX>666</locationX>
+        <locationY>1358</locationY>
+        <defaultConnector>
+            <targetReference>Get_Case_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Mapping Not Found</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Case_Type_Mapping_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Record_Type_To_Case_Type_Mapping</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Case_Record_Type_Name</targetReference>
+            </connector>
+            <label>Mapping Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If the Case is currently New or Assigned, the Case Status should be changed to In Progress</description>
+        <name>Is_Case_Currently_New_Or_Assigned</name>
+        <label>Is Case Currently New Or Assigned?</label>
+        <locationX>710</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>New_Case_Information</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>New_Or_Assigned</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>varR_Case.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varR_Case.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Assigned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_In_Progress_Status_To_Case</targetReference>
+            </connector>
+            <label>New Or Assigned</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>What Case Type is chosen in the New Case Information Screen?</description>
+        <name>What_Case_Type_Is_Chosen</name>
+        <label>What Case Type Is Chosen</label>
+        <locationX>666</locationX>
+        <locationY>950</locationY>
+        <defaultConnector>
+            <targetReference>Get_Case_Record_Type_To_Case_Type_Mapping</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Name_Plate</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CaseType_Reason.middleValue</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Name Plate</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>New_Request_Information</targetReference>
+            </connector>
+            <label>Name Plate</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the input variable an Account (Create New Case) or a Case (Update Existing Case)?</description>
+        <name>What_Input_Variable_Object_Is_Used</name>
+        <label>What Input Variable Object Is Used</label>
+        <locationX>666</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other</defaultConnectorLabel>
+        <rules>
+            <name>Account</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>001</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account_Record</targetReference>
+            </connector>
+            <label>Account</label>
+        </rules>
+        <rules>
+            <name>Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Case_Record</targetReference>
+            </connector>
+            <label>Case</label>
+        </rules>
+    </decisions>
+    <description>With this flow, a User can easily create a Case from the Account Record Page or update a new Case on the Case Record Page using a button.</description>
+    <dynamicChoiceSets>
+        <description>What is the Case Label, Woonstad or Stadswonen</description>
+        <name>CaseLabel</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Label__c</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>The Case&#39;s origin, either Email, Phone or Website</description>
+        <name>Choice_CaseOrigin</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Origin</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>The Case&#39;s priority, either Low, Medium or High</description>
+        <name>Choice_CasePriority</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Priority</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>The Case&#39;s type, which is a dependent picklist for Case Reason.</description>
+        <name>Choice_CaseType</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Type</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <formulas>
+        <description>The link to the Case record after it has been created or updated.</description>
+        <name>forT_CaseRecordLink</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_550}, FIND(&#39;/services&#39;, {!$Api.Partner_Server_URL_550})) &amp; {!varR_Case.Id}</expression>
+    </formulas>
+    <formulas>
+        <name>forT_DefaultCaseOrigin</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  BEGINS({!recordId}, &quot;001&quot;),
+  &quot;Phone&quot;,
+  TEXT({!varR_Case.Origin})
+)</expression>
+    </formulas>
+    <formulas>
+        <description>The Case&#39;s default reason, which will automatically be filled if certain phrases are added to the subject or description.</description>
+        <name>forT_DefaultCaseReason</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    OR(
+        CONTAINS(LOWER({!Subject}), &quot;aannemer&quot;),
+        CONTAINS(LOWER({!Description}), &quot;aannemer&quot;)
+    ),
+    &quot;Contractors&quot;,
+    IF(
+        OR(
+            CONTAINS(LOWER({!Subject}), &quot;account&quot;),
+            CONTAINS(LOWER({!Description}), &quot;account&quot;),
+            CONTAINS(LOWER({!Subject}), &quot;website&quot;),
+            CONTAINS(LOWER({!Description}), &quot;website&quot;),
+            CONTAINS(LOWER({!Subject}), &quot;app&quot;),
+            CONTAINS(LOWER({!Description}), &quot;app&quot;)
+        ),
+        &quot;Account / Website / App&quot;,
+        IF(
+            OR(
+                CONTAINS(LOWER({!Subject}), &quot;adresgegevens&quot;),
+                CONTAINS(LOWER({!Description}), &quot;adresgegevens&quot;),
+                CONTAINS(LOWER({!Subject}), &quot;betaalgegevens&quot;),
+                CONTAINS(LOWER({!Description}), &quot;betaalgegevens&quot;)
+            ),
+            &quot;Address And Payment Details&quot;,
+            IF(
+             OR(
+                CONTAINS(LOWER({!Subject}), &quot;geschil&quot;),
+                CONTAINS(LOWER({!Description}), &quot;geschil&quot;)
+            ),
+                &quot;Dispute Advisory Committee&quot;,
+                IF(
+                    OR(
+                        CONTAINS(LOWER({!Subject}), &quot;huurcommissie&quot;),
+                        CONTAINS(LOWER({!Description}), &quot;huurcommissie&quot;)
+                    ),
+                    &quot;Rent Committee&quot;,
+                    IF(
+                        OR(
+                            CONTAINS(LOWER({!Subject}), &quot;inzage&quot;),
+                            CONTAINS(LOWER({!Description}), &quot;inzage&quot;)
+                        ),
+                        &quot;Request For Inspection&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;juridisch&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;juridisch&quot;),
+                                CONTAINS(LOWER({!Subject}), &quot;procedure&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;procedure&quot;)
+                            ),
+                            &quot;Legal Procedure&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;aftersales&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;aftersales&quot;)
+                            ),
+                            &quot;Aftersales&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;agressie&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;agressie&quot;),
+                                CONTAINS(LOWER({!Subject}), &quot;bedreiging&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;bedreiging&quot;)
+                            ),
+                            &quot;Aggression / Threat&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;deurwaarder&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;deurwaarder&quot;)
+                            ),
+                            &quot;Bailiff&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;makelaar&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;makelaar&quot;)
+                            ),
+                            &quot;Broker&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;belcomputer&quot;),
+                                CONTAINS(LOWER({!Description}), &quot;belcomputer&quot;)
+                            ),
+                            &quot;Call Computer&quot;,
+                            &quot;&quot;
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+)
+)
+)
+)
+)</expression>
+    </formulas>
+    <formulas>
+        <description>The Case&#39;s default type, which will automatically be filled if certain phrases are added to the subject or description.</description>
+        <name>forT_DefaultCaseType</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    OR(
+        CONTAINS(LOWER({!Subject}), &quot;algemeen&quot;),
+        CONTAINS(LOWER({!Subject}), &quot;algemene&quot;)
+    ),
+    &quot;General&quot;,
+    IF(
+        OR(
+            CONTAINS(LOWER({!Subject}), &quot;betaling&quot;)
+        ),
+        &quot;Paymentt&quot;,
+        IF(
+            OR(
+                CONTAINS(LOWER({!Subject}), &quot;onderhoud&quot;)
+            ),
+            &quot;Maintenance&quot;,
+            IF(
+              OR(
+                CONTAINS(LOWER({!Subject}), &quot;speciaal&quot;),
+                CONTAINS(LOWER({!Subject}), &quot;speciale&quot;)
+             ),
+                &quot;Specials&quot;,
+                IF(
+                    OR(
+                        CONTAINS(LOWER({!Subject}), &quot;veiligheid&quot;),
+                        CONTAINS(LOWER({!Subject}), &quot;protocol&quot;)
+                    ),
+                    &quot;Safety Protocol&quot;,
+                    IF(
+                        OR(
+                            CONTAINS(LOWER({!Subject}), &quot;huur&quot;),
+                            CONTAINS(LOWER({!Subject}), &quot;koop&quot;)
+                        ),
+                        &quot;Rent and Sell&quot;,
+                        IF(
+                            OR(
+                                CONTAINS(LOWER({!Subject}), &quot;district&quot;)
+                            ),
+                            &quot;District Management&quot;,
+                            &quot;&quot;
+                        )
+                    )
+                )
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <description>The Case&#39;s default priority, which will automatically be filled if certain phrases are added to the subject or description.</description>
+        <name>forT_DefaultPriority</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   OR(
+      CONTAINS(LOWER({!Subject}),&quot;urgent&quot;),
+      CONTAINS(LOWER({!Subject}),&quot;spoed&quot;),
+      CONTAINS(LOWER({!Subject}),&quot;belang&quot;),
+      CONTAINS(LOWER({!Description}),&quot;urgent&quot;),
+      CONTAINS(LOWER({!Description}),&quot;spoed&quot;),
+      CONTAINS(LOWER({!Description}),&quot;belang&quot;)
+        ),
+        &quot;High&quot;, &quot;Medium&quot;
+    )</expression>
+    </formulas>
+    <interviewLabel>Screen Flow - Create/Update New Case {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Screen Flow - Create/Update New Case</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>Create the new case record based on input screen &#39;new request information&#39; and default values in variable. Update the Case if there is already a Case.</description>
+        <name>Create_Update_New_Case_Record</name>
+        <label>Create/Update New Case Record</label>
+        <locationX>666</locationX>
+        <locationY>1874</locationY>
+        <connector>
+            <targetReference>Case_Record_Type_Of_Created_Case</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <inputReference>varR_Case</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <description>Create a Request record if the Case does not have one yet. Update the existing Request if the Case does have one.</description>
+        <name>Create_Update_Request_Record</name>
+        <label>Create/Update Request Record</label>
+        <locationX>270</locationX>
+        <locationY>2198</locationY>
+        <connector>
+            <targetReference>Update_Request_Lookup_On_Associated_Case</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <inputReference>varR_Request</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Get the Account record of the Account where the Case was created</description>
+        <name>Get_Account_Record</name>
+        <label>Get Account Record</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Case_Variables</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Case_Record</name>
+        <label>Get Case Record</label>
+        <locationX>710</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Current_Case_Variables</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the record type ID of Case from the Custom Metadata Type in order to allocate to the new case record variable. The default recordtype is &#39;Question&#39; if no mapping is found.</description>
+        <name>Get_Case_Record_Type</name>
+        <label>Get Case Record Type</label>
+        <locationX>666</locationX>
+        <locationY>1658</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Values_For_Case_Creation</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varT_Case_Record_Type_Developer_Name</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the Custom Metadata Type where the Case Record Type to Case Type mapping is saved.</description>
+        <name>Get_Case_Record_Type_To_Case_Type_Mapping</name>
+        <label>Get Case Record Type To Case Type Mapping</label>
+        <locationX>666</locationX>
+        <locationY>1250</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Case_Type_Mapping_Found</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseType_Reason.middleValue</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case_Record_Type_Mapping__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the Look-up on the Case to the (new) Request record.</description>
+        <name>Update_Request_Lookup_On_Associated_Case</name>
+        <label>Update Request Lookup On Associated Case</label>
+        <locationX>270</locationX>
+        <locationY>2306</locationY>
+        <connector>
+            <targetReference>Success_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varR_Case.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Request__c</field>
+            <value>
+                <elementReference>varR_Request.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <runInMode>DefaultMode</runInMode>
+    <screens>
+        <description>Screen to display error if records could not be created</description>
+        <name>Error_Screen</name>
+        <label>Error Screen</label>
+        <locationX>1546</locationX>
+        <locationY>1982</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Screen_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Error_Screen_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Error_Screen_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>DisplayErrorMessage</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Er is iets mis gegaan. Probeer het alsjeblieft opnieuw. Als de fout aan blijft houden, neem dan contact op met Salesforce beheer.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(244, 43, 43);&quot;&gt;{!$Flow.FaultMessage}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>10</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Error_Screen_Section1_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Collection information to create the new Case</description>
+        <name>New_Case_Information</name>
+        <label>New Case Information</label>
+        <locationX>666</locationX>
+        <locationY>842</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>What_Case_Type_Is_Chosen</targetReference>
+        </connector>
+        <fields>
+            <name>New_Case_Information_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>New_Case_Information_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Subject</name>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>Get_Case_Record.Subject</elementReference>
+                    </defaultValue>
+                    <fieldText>Subject</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <fields>
+                    <name>Description</name>
+                    <defaultValue>
+                        <stringValue>{!Get_Case_Record.Description}</stringValue>
+                    </defaultValue>
+                    <fieldText>Description</fieldText>
+                    <fieldType>LargeTextArea</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>10</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section1_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>New_Case_Information_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>New_Case_Information_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section2_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>CaseType_Reason</name>
+                    <extensionName>flowruntime:dependentPicklists</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>dependencyWrapperApiName</name>
+                        <value>
+                            <stringValue>Case</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>topPicklistApiName</name>
+                        <value>
+                            <stringValue>Type</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>middlePicklistApiName</name>
+                        <value>
+                            <stringValue>Case_Reason__c</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>topLabel</name>
+                        <value>
+                            <stringValue>Case Type</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>middleLabel</name>
+                        <value>
+                            <stringValue>Case Reason</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>middleRequired</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>topRequired</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>topValue</name>
+                        <value>
+                            <elementReference>varR_Case.Type</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>middleValue</name>
+                        <value>
+                            <elementReference>varR_Case.Case_Reason__c</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>5</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section2_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Case_Origin</name>
+                    <choiceReferences>Choice_CaseOrigin</choiceReferences>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>forT_DefaultCaseOrigin</elementReference>
+                    </defaultValue>
+                    <fieldText>Case Origin</fieldText>
+                    <fieldType>DropdownBox</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>5</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section2_Column4</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>New_Case_Information_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>New_Case_Information_Section3_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section3_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Label</name>
+                    <choiceReferences>CaseLabel</choiceReferences>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>varT_AccountContractParty</elementReference>
+                    </defaultValue>
+                    <fieldText>Label</fieldText>
+                    <fieldType>DropdownBox</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>LabelUnknown</name>
+                    <fieldText>&lt;p&gt;&lt;em&gt;Op basis van de contractgegevens van het Account kon niet worden vastgesteld wat het label van de Case moet zijn. Indien bekend, vul deze in.&lt;/em&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>varT_AccountContractParty</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <stringValue>Unknown</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>LabelKnown</name>
+                    <fieldText>&lt;p&gt;&lt;em&gt;Dit is het label van de Case wat is bepaald op basis van de contractgegevens van dit Account.&lt;/em&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>varT_AccountContractParty</leftValueReference>
+                            <operator>NotEqualTo</operator>
+                            <rightValue>
+                                <stringValue>Unknown</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>10</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Case_Information_Section3_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Collect Request information</description>
+        <name>New_Request_Information</name>
+        <label>New Request Information</label>
+        <locationX>534</locationX>
+        <locationY>1058</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Case_Record_Type_To_Case_Type_Mapping</targetReference>
+        </connector>
+        <fields>
+            <name>New_Request_Information_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>New_Request_Information_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Request_Information_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>varR_Request.Name_Plate_Text__c</objectFieldReference>
+                </fields>
+                <fields>
+                    <name>Txt_AddressVisibility</name>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;Actieve woonadres van aanvrager:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;&lt;em&gt;{!Get_Account_Record.Full_Shipping_Street__c}&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;&lt;em&gt;{!Get_Account_Record.Full_Shipping_Postal_Code__c}&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;&lt;em&gt;{!Get_Account_Record.Full_Shipping_City__c}&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211); background-color: rgb(255, 255, 255);&quot;&gt;﻿Controleer of de aanvraag ook voor dit adres geldt.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>5</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Request_Information_Section1_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <fieldType>ObjectProvided</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>false</isRequired>
+                    <objectFieldReference>varR_Request.Supplier__c</objectFieldReference>
+                </fields>
+                <fields>
+                    <name>Txt_SupplierSelection</name>
+                    <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;Op basis van het adres bepaal je de leverancier om deze aanvraag op te pakken.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;Beheerorganisatie &quot;Noord/Oost&quot;: KELLER GROOTHANDEL&lt;/strong&gt;&lt;/li&gt;&lt;li&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;Beheerorganisatie &quot;Zuid&quot;: HET ZUIDER SLEUTELHUIS BV&lt;/strong&gt;&lt;/li&gt;&lt;li&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;Beheerorganisatie &quot;Centrum/West&quot;: Ijzerhandel Overschie&lt;/strong&gt;&lt;ul&gt;&lt;li&gt;&lt;strong style=&quot;color: rgb(1, 118, 211);&quot;&gt;&lt;u&gt;LET OP:&lt;/u&gt; aanvragen voor &quot;Centrum/West&quot; voor specifiek complex &lt;u&gt;23109&lt;/u&gt; gaan naar WEIJNTJES HANG- EN SLUITWERK&lt;/strong&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>5</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>New_Request_Information_Section1_Column4</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Success_Screen</name>
+        <label>Success Screen</label>
+        <locationX>666</locationX>
+        <locationY>2546</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Screen_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Success_Screen_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Success_Screen_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Txt_SuccessMessageCreate</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Goed werk {!$User.FirstName}, je hebt de Zaak succesvol aangemaakt.&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>recordId</leftValueReference>
+                            <operator>StartsWith</operator>
+                            <rightValue>
+                                <stringValue>001</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>Txt_SuccessMessageUpdate</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Goed werk {!$User.FirstName}, je hebt de Zaak succesvol aangepast.&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>recordId</leftValueReference>
+                            <operator>StartsWith</operator>
+                            <rightValue>
+                                <stringValue>500</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>FinishButton</name>
+                    <fieldText>&lt;p&gt;{!Txt_OpenRecordButton}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>recordId</leftValueReference>
+                            <operator>StartsWith</operator>
+                            <rightValue>
+                                <stringValue>001</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>10</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Success_Screen_Section1_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>540</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>What_Input_Variable_Object_Is_Used</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>This subflow retrieves the Accounts Contract Parties from its Real Estate Contracts, which are linked to the Contract Lines.</description>
+        <name>Retrieve_The_Account_s_Contract_Parties</name>
+        <label>Retrieve The Account&#39;s Contract Parties</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <connector>
+            <targetReference>New_Case_Information</targetReference>
+        </connector>
+        <flowName>AL_Get_Account_Contract_Parties</flowName>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>varT_AccountContractParty</assignToReference>
+            <name>varT_AccountContractParty</name>
+        </outputAssignments>
+    </subflows>
+    <textTemplates>
+        <description>Button to open the new or updated Case.</description>
+        <name>Txt_OpenRecordButton</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;a class=&quot;slds-button slds-button_brand&quot; href=&quot;{!forT_CaseRecordLink}&quot; target=&quot;_self&quot;&gt;Open Zaak&lt;/a&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varB_CaseHandlingInWocas</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>The record variable where information about the Case is captured.</description>
+        <name>varR_Case</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>The record variable where information about the Request is captured, which is created if the Case record type is Request.</description>
+        <name>varR_Request</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Request__c</objectType>
+    </variables>
+    <variables>
+        <description>What is the Account&#39;s Contract Party, Woonstad or Stadswonen?</description>
+        <name>varT_AccountContractParty</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varT_Case_Record_Type_Developer_Name</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Question</stringValue>
+        </value>
+    </variables>
+</Flow>

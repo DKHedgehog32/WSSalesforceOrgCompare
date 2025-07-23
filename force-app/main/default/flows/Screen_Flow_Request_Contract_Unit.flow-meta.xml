@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Calls the API</description>
+        <name>Fetch_Contract_Unit</name>
+        <label>Fetch Contract Unit</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <actionName>FetchEenhedenInvocable</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Succeeded</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>id</name>
+            <value>
+                <elementReference>External_Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>idAdministratie</name>
+            <value>
+                <elementReference>Administration</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>FetchEenhedenInvocable</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>61.0</apiVersion>
+    <choices>
+        <description>Requests persoon from WOCAS</description>
+        <name>WOCAS</name>
+        <choiceText>Wocas</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>WOCAS</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Did the callout return a success (202)?</description>
+        <name>Succeeded</name>
+        <label>Succeeded</label>
+        <locationX>182</locationX>
+        <locationY>350</locationY>
+        <defaultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Returned_Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Fetch_Contract_Unit.isSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Success</targetReference>
+            </connector>
+            <label>Returned Success</label>
+        </rules>
+    </decisions>
+    <description>Requests OKAPI to send the contract unit to Salesforce</description>
+    <environments>Default</environments>
+    <interviewLabel>Screen Flow - Request Contract Unit {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
+    <label>Screen Flow - Request Contract Unit</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Error_Screen</name>
+        <label>Error Screen</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Occurred_Display</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(250, 0, 0);&quot;&gt;An error occurred&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(250, 0, 0);&quot;&gt;{!Fetch_Contract_Unit.errors}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(250, 0, 0);&quot;&gt;{!$Flow.FaultMessage}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Allows user to request a contract unit from external system.</description>
+        <name>Request_Contract_Unit</name>
+        <label>Request Contract Unit</label>
+        <locationX>182</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Fetch_Contract_Unit</targetReference>
+        </connector>
+        <fields>
+            <name>External_Id</name>
+            <dataType>String</dataType>
+            <fieldText>External Id</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;An External Id must consist of 11 numeric characters.&lt;/p&gt;</errorMessage>
+                <formulaExpression>REGEX({!External_Id},&quot;^\\d{11}?$&quot;)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Administration</name>
+            <choiceReferences>WOCAS</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>WOCAS</defaultSelectedChoiceReference>
+            <fieldText>Administration</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Success</name>
+        <label>Success</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Success_Message_Display_Text</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 18px; color: rgb(33, 228, 40);&quot;&gt;Request Successful&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Request_Contract_Unit</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+</Flow>
