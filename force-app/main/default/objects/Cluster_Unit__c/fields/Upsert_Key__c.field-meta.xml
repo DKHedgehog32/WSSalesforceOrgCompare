@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Upsert_Key__c</fullName>
     <caseSensitive>false</caseSensitive>
     <description>Concatenation of cluster external id and contract unit external id, to avoid duplicate relations</description>
