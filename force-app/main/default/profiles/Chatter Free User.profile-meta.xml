@@ -866,11 +866,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Address__c.Correction__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Address__c.Deduplication_Key__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1427,11 +1422,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Data_Quality_Score__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Contact.DeathDate_Formula__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

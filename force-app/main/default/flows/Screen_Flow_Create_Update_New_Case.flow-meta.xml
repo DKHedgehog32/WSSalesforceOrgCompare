@@ -1333,7 +1333,7 @@ The record type selection is not scalable. We tried to use the record choice set
         <locationX>1546</locationX>
         <locationY>2006</locationY>
         <connector>
-            <targetReference>Screen_Flow_Error_Screen</targetReference>
+            <targetReference>Subflow_ErrorScreen</targetReference>
         </connector>
         <flowName>AL_Publish_Flow_Fault_event</flowName>
         <inputAssignments>
@@ -1396,7 +1396,7 @@ The record type selection is not scalable. We tried to use the record choice set
     </subflows>
     <subflows>
         <description>Show the generic Screen Flow Error Screen</description>
-        <name>Screen_Flow_Error_Screen</name>
+        <name>Subflow_ErrorScreen</name>
         <label>Screen Flow - Error Screen</label>
         <locationX>1546</locationX>
         <locationY>2114</locationY>
