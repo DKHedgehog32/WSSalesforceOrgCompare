@@ -326,6 +326,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>KadasterAddressLookupController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>KadasterAddressLookupControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>KadasterAddressResponse</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -539,6 +547,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>TestDataFactory</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UpdateAddressesBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1005,11 +1017,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Apex_Fault__e.Line_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Apex_Fault__e.Record_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1066,11 +1073,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Automation_Log__c.Error_Message__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Automation_Log__c.Line_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2839,6 +2841,10 @@
     <flowAccesses>
         <enabled>false</enabled>
         <flow>STF_Update_Account_Primary_Addresses</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>false</enabled>
+        <flow>Screen_Flow_Address_Selector</flow>
     </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>

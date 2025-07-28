@@ -25,18 +25,4 @@ public with sharing class SharedUtils {
         }
         return output;
     }
-    //
-    //Bulkify and wrap?
-    public static List<Database.SaveResult> createErrorEvent(String message, String location, String userId) {
-        List<Database.SaveResult> results;
-        List<Apex_Fault__e> errorEvents = new List<Apex_Fault__e>();
-        Apex_Fault__e ev = new Apex_Fault__e();
-        ev.Error_Location__c = '';
-        ev.Error_Message__c = '';
-        ev.Record_Id__c = '';
-        errorEvents.add(ev);
-        results = EventBus.publish(errorEvents);
-
-        return results;
-    }
 }

@@ -210,6 +210,22 @@ Create a Topdesk ticket if the error persists.</value>
         <value>Historic Contract Lines</value>
     </labels>
     <labels>
+        <fullName>House_Number</fullName>
+        <categories>KadasterLWC</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>House Number</shortDescription>
+        <value>House Number</value>
+    </labels>
+    <labels>
+        <fullName>House_Number_Help_Text</fullName>
+        <categories>KadasterLWC</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>House Number Help Text</shortDescription>
+        <value>House number Only. No house letter or house number addition. Based on the housenumber we show all options.</value>
+    </labels>
+    <labels>
         <fullName>Initials</fullName>
         <categories>Flow Translation</categories>
         <language>en_US</language>
@@ -240,6 +256,14 @@ Create a Topdesk ticket if the error persists.</value>
         <protected>false</protected>
         <shortDescription>NoTriggeringRecordLinked</shortDescription>
         <value>No Triggering Record Linked</value>
+    </labels>
+    <labels>
+        <fullName>No_Address_Found</fullName>
+        <categories>KadasterLWC</categories>
+        <language>nl_NL</language>
+        <protected>false</protected>
+        <shortDescription>No Address Found</shortDescription>
+        <value>No Address Found</value>
     </labels>
     <labels>
         <fullName>No_Results</fullName>
@@ -280,6 +304,22 @@ Create a Topdesk ticket if the error persists.</value>
         <protected>false</protected>
         <shortDescription>PersonAccount</shortDescription>
         <value>Person Account</value>
+    </labels>
+    <labels>
+        <fullName>Postal_Code</fullName>
+        <categories>KadasterLWC</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Postal Code</shortDescription>
+        <value>Postal Code</value>
+    </labels>
+    <labels>
+        <fullName>Postal_Code_Help_Text</fullName>
+        <categories>KadasterLWC</categories>
+        <language>nl_NL</language>
+        <protected>false</protected>
+        <shortDescription>Postal Code Help Text</shortDescription>
+        <value>Format: 1234AB</value>
     </labels>
     <labels>
         <fullName>Primary</fullName>
@@ -352,6 +392,14 @@ Create a Topdesk ticket if the error persists.</value>
         <protected>false</protected>
         <shortDescription>RoleRelation</shortDescription>
         <value>Role Relation</value>
+    </labels>
+    <labels>
+        <fullName>Select_An_Address</fullName>
+        <categories>KadasterLWC</categories>
+        <language>nl_NL</language>
+        <protected>false</protected>
+        <shortDescription>Select An Address</shortDescription>
+        <value>Select An Address</value>
     </labels>
     <labels>
         <fullName>ShippingPostalCode</fullName>

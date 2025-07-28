@@ -90,81 +90,94 @@ public with sharing class PersoonService {
         }
 
     }
+    
     public static PersoonModel postPersoon(PersoonModel persoon) {
-        //
-        // Post always used for new accounts
-        Account acc = DataMapper.persoonToAccount(persoon);
-        //
-        // Assign the UUID here, if empty
-        if(String.isEmpty(acc.UUID__c)) {
-            acc.UUID__c = IdentifierService.getUUID();
-        }
-        //
-        // Ignore duplicate rules
-        System.debug('### Saving account: '+JSON.serializePretty(acc));
-        Database.DMLOptions dml = new Database.DMLOptions();
-        dml.DuplicateRuleHeader.AllowSave = true;
-        Database.SaveResult sr = Database.insert(acc, dml);
-        if(sr.isSuccess()) {
-
+        try {
             //
-            // Create the addresses
-            List<Account_Address__c> accAddresses = AddressService.convertPersoonAddresses(persoon, acc.UUID__c);
-            upsert accAddresses Schema.Account_Address__c.Deduplication_Key__c;
-
+            // Post always used for new accounts
+            Account acc = DataMapper.persoonToAccount(persoon);
             //
-            // Bank accounts
-            List<Bank_Account__c> bas = BankAccountService.getBankAccountRecordsForUpsert(persoon, acc.UUID__c);
-            //System.debug('### UPSERTING BANK ACCOUNTS '+JSON.serializePretty(bas));
-            upsert bas Schema.Bank_Account__c.Integration_Key__c;
-
+            // Assign the UUID here, if empty
+            if(String.isEmpty(acc.UUID__c)) {
+                acc.UUID__c = IdentifierService.getUUID();
+            }
             //
-            // Relations
-            List<AccountContactRelation> accContactRelations = PersonRelationService.getAccountContactRelationRecordsForUpsert(persoon, acc.UUID__c);
-            System.Debug('### Upserting accContactRelations '+JSON.serializePretty(accContactRelations));
-            upsert accContactRelations Schema.AccountContactRelation.Deduplication_Key__c;
+            // Ignore duplicate rules
+            System.debug('### Saving account: '+JSON.serializePretty(acc));
+            Database.DMLOptions dml = new Database.DMLOptions();
+            dml.DuplicateRuleHeader.AllowSave = true;
+            Database.SaveResult sr = Database.insert(acc, dml);
+            if(sr.isSuccess()) {
 
-            List<Relationship__c> relationships = PersonRelationService.getRelationshipRecordsForUpsert(persoon, acc.UUID__c);
-            System.Debug('### Upserting relationships '+JSON.serializePretty(relationships));
-            upsert relationships Schema.Relationship__c.Deduplication_Key__c;
+                //
+                // Create the addresses
+                List<Account_Address__c> accAddresses = AddressService.convertPersoonAddresses(persoon, acc.UUID__c);
+                upsert accAddresses Schema.Account_Address__c.Deduplication_Key__c;
 
-            //
-            // Enrich input for output
-            persoon.id = acc.UUID__c;
-            return persoon;
-        } else {
-            throw new PersoonServiceException(JSON.serialize(sr.getErrors()));
+                //
+                // Bank accounts
+                List<Bank_Account__c> bas = BankAccountService.getBankAccountRecordsForUpsert(persoon, acc.UUID__c);
+                //System.debug('### UPSERTING BANK ACCOUNTS '+JSON.serializePretty(bas));
+                upsert bas Schema.Bank_Account__c.Integration_Key__c;
+
+                //
+                // Relations
+                List<AccountContactRelation> accContactRelations = PersonRelationService.getAccountContactRelationRecordsForUpsert(persoon, acc.UUID__c);
+                System.Debug('### Upserting accContactRelations '+JSON.serializePretty(accContactRelations));
+                upsert accContactRelations Schema.AccountContactRelation.Deduplication_Key__c;
+
+                List<Relationship__c> relationships = PersonRelationService.getRelationshipRecordsForUpsert(persoon, acc.UUID__c);
+                System.Debug('### Upserting relationships '+JSON.serializePretty(relationships));
+                upsert relationships Schema.Relationship__c.Deduplication_Key__c;
+
+                //
+                // Enrich input for output
+                persoon.id = acc.UUID__c;
+                return persoon;
+            } else {
+                throw new PersoonServiceException(JSON.serialize(sr.getErrors()));
+            }
+        } catch (Exception ex) {
+            ApexFaultHandler.publishError(ex, 'PersoonService' ,'postPersoon');
+            throw ex;
         }
     }
+
     public static PersoonModel patchPersoon(String uuid, PersoonModel persoon) {
-        Account acc = DataMapper.persoonToAccount(persoon);
-        acc.UUID__c = uuid;
-        Database.UpsertResult sr = Database.upsert(acc, Account.fields.UUID__c);
+        try {
+            Account acc = DataMapper.persoonToAccount(persoon);
+            acc.UUID__c = uuid;
+            Database.UpsertResult sr = Database.upsert(acc, Account.fields.UUID__c);
 
-        if(sr.isSuccess()) {
-            List<Account_Address__c> accAddresses = AddressService.convertPersoonAddresses(persoon, acc.UUID__c);
+            if(sr.isSuccess()) {
+                List<Account_Address__c> accAddresses = AddressService.convertPersoonAddresses(persoon, acc.UUID__c);
 
-            upsert accAddresses Schema.Account_Address__c.Deduplication_Key__c;
-            //
-            // Bank accounts
-            List<Bank_Account__c> bas = BankAccountService.getBankAccountRecordsForUpsert(persoon, acc.UUID__c);
-            upsert bas Schema.Bank_Account__c.Integration_Key__c;
+                upsert accAddresses Schema.Account_Address__c.Deduplication_Key__c;
+                //
+                // Bank accounts
+                List<Bank_Account__c> bas = BankAccountService.getBankAccountRecordsForUpsert(persoon, acc.UUID__c);
+                upsert bas Schema.Bank_Account__c.Integration_Key__c;
 
 
-            // Relations
-            List<AccountContactRelation> accContactRelations = PersonRelationService.getAccountContactRelationRecordsForUpsert(persoon, acc.UUID__c);
-            upsert accContactRelations Schema.AccountContactRelation.Deduplication_Key__c;
+                // Relations
+                List<AccountContactRelation> accContactRelations = PersonRelationService.getAccountContactRelationRecordsForUpsert(persoon, acc.UUID__c);
+                upsert accContactRelations Schema.AccountContactRelation.Deduplication_Key__c;
 
-            List<Relationship__c> relationships = PersonRelationService.getRelationshipRecordsForUpsert(persoon, acc.UUID__c);
-            upsert relationships Schema.Relationship__c.Deduplication_Key__c;
+                List<Relationship__c> relationships = PersonRelationService.getRelationshipRecordsForUpsert(persoon, acc.UUID__c);
+                upsert relationships Schema.Relationship__c.Deduplication_Key__c;
 
-            persoon.id = acc.UUID__c;
+                persoon.id = acc.UUID__c;
 
-            return persoon;
-        } else {
-            throw new PersoonServiceException(JSON.serialize(sr.getErrors()));
+                return persoon;
+            } else {
+                throw new PersoonServiceException(JSON.serialize(sr.getErrors()));
+            }
+        } catch (Exception ex) {
+            ApexFaultHandler.publishError(ex, 'PersoonService' ,'patchPersoon');
+            throw ex;
         }
     }
+
     //
     // Validates a PATCH body
     public static PersoonRequestValidationResult validatePatchRequest(PersoonModel patchPersoon) {

@@ -18,11 +18,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Automation_Log__c.Line_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Automation_Log__c.Stack_Trace__c</field>
         <readable>true</readable>
     </fieldPermissions>

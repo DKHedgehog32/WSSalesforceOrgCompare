@@ -1,17 +1,35 @@
 @IsTest
 private class ApexFaultHandlerTest {
+
     @IsTest
-    static void testBehavior1() {
+    static void testPublishErrorWithRecordId() {
+        Exception simulatedException;
+
+        // Force a real exception
+        try {
+            Integer i = 1 / 0;
+        } catch (Exception ex) {
+            simulatedException = ex;
+        }
+
         Test.startTest();
-        Database.SaveResult res = ApexFaultHandler.publishErrorEvent('Apex Test', 'Unit Test Message', UserInfo.getUserId());
+        ApexFaultHandler.publishError(simulatedException, 'TestClass', 'testMethod', UserInfo.getUserId());
         Test.stopTest();
-        System.assertEquals(true, res.success, 'Expected successful publication');
     }
+
     @IsTest
-    static void testBehavior2() {
+    static void testPublishErrorWithoutRecordId() {
+        Exception simulatedException;
+
+        try {
+            List<Integer> numbers = new List<Integer>();
+            Integer x = numbers[1]; // Index out of bounds
+        } catch (Exception ex) {
+            simulatedException = ex;
+        }
+
         Test.startTest();
-        Database.SaveResult res = ApexFaultHandler.publishErrorEvent('Apex Test', 'Unit Test Message');
+        ApexFaultHandler.publishError(simulatedException, 'TestClass', 'testMethod');
         Test.stopTest();
-        System.assertEquals(true, res.success, 'Expected successful publication');
     }
 }

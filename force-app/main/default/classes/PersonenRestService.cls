@@ -47,11 +47,8 @@ global with sharing class PersonenRestService {
                         res.statusCode = 404;
                         res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
                     }
-                } catch(Exception e) {
-                    responseBodyStructure.errors.add(e.getMessage());
-                    responseBodyStructure.isSuccess = false;
-                    res.statusCode = 500;
-                    res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
+                } catch(Exception ex) {
+                    ApexFaultHandler.publishError(ex, 'PersonenRestService' ,'getRelation');
                 }
             }
         } catch(Exception e) {
@@ -59,6 +56,7 @@ global with sharing class PersonenRestService {
             // JSON body response
             responseBodyStructure.isSuccess = false;
             responseBodyStructure.errors.add(e.getMessage());
+            ApexFaultHandler.publishError(e, 'PersonenRestService' ,'getRelation');
 
             //
             // Http level response
@@ -111,6 +109,7 @@ global with sharing class PersonenRestService {
             responseBodyStructure.isSuccess = false;
             responseBodyStructure.errors.add(e.getMessage());
             Database.rollback(sp);
+            ApexFaultHandler.publishError(e, 'PersonenRestService' ,'postRelation');
             //
             // Http level response
             res.statusCode = 500;
@@ -166,6 +165,7 @@ global with sharing class PersonenRestService {
             responseBodyStructure.isSuccess = false;
             responseBodyStructure.errors.add(e.getMessage());
             Database.rollback(sp);
+            ApexFaultHandler.publishError(e, 'PersonenRestService' ,'patchRelation');
 
             //
             // Http level response

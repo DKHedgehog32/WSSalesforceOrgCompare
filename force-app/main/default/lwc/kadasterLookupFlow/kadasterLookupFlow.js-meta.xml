@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <masterLabel>Kadaster API - Multiple Addresses</masterLabel>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="streetName" type="String" label="Street Name" role="outputOnly"/>
+            <property name="houseNumber" type="String" label="House Number" role="outputOnly"/>
+            <property name="houseLetter" type="String" label="House Letter" role="outputOnly"/>
+            <property name="houseNumberAddition" type="String" label="House Number Addition" role="outputOnly"/>
+            <property name="postalCode" type="String" label="Postal Code" role="outputOnly"/>
+            <property name="city" type="String" label="City" role="outputOnly"/>
+            <property name="addressableObjectIdentification" type="String" label="Kadaster Addressable Object ID" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

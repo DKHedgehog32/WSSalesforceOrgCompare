@@ -55,11 +55,8 @@ global without sharing class PersoonAdressenRestService {
                     res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
                 }
 
-            } catch (Exception e) {
-                responseBodyStructure.errors.add(e.getMessage());
-                responseBodyStructure.isSuccess = false;
-                res.statusCode = 500;
-                res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
+            } catch (Exception ex) {
+                ApexFaultHandler.publishError(ex, 'PersoonAdressenRestService' ,'getPersoonAdressen');
             }
         }
     }
@@ -92,11 +89,8 @@ global without sharing class PersoonAdressenRestService {
             res.statusCode = 201; // Created
             res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
 
-        } catch (Exception e) {
-            responseBodyStructure.errors.add(e.getMessage());
-            responseBodyStructure.isSuccess = false;
-            res.statusCode = 400;
-            res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
+        } catch (Exception ex) {
+            ApexFaultHandler.publishError(ex, 'PersoonAdressenRestService' ,'postPersoonAdres');
         }
     }
     //

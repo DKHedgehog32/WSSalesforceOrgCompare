@@ -47,23 +47,13 @@ global with sharing class PersonRelationRestService {
                         res.statusCode = 404;
                         res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
                     }
-                } catch(Exception e) {
-                    responseBodyStructure.errors.add(e.getMessage());
-                    responseBodyStructure.isSuccess = false;
-                    res.statusCode = 500;
-                    res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
+                } catch(Exception ex) {
+                    ApexFaultHandler.publishError(ex, 'PersonRelationRestService' ,'getPersonRelations');
                 }
             }
-        } catch(Exception e) {
-            //
-            // JSON body response
-            responseBodyStructure.isSuccess = false;
-            responseBodyStructure.errors.add(e.getMessage());
+        } catch(Exception ex) {
+                    ApexFaultHandler.publishError(ex, 'PersonRelationRestService' ,'getPersonRelations');
 
-            //
-            // Http level response
-            res.statusCode = 500;
-            res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
         }
         System.debug('### Service get person relations returning '+JSON.serializePretty(responseBodyStructure));
 

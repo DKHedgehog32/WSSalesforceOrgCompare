@@ -7,9 +7,14 @@ public with sharing class InjixoAgentStatusInvocable {
         }
         sendStatusesFuture(JSON.serialize(allStatuses));
     }
+
     @Future(callout=true) @TestVisible
     private static void sendStatusesFuture(String statusJson) {
-        List<InjixoAgentStatusModel> statuses = (List<InjixoAgentStatusModel>) JSON.deserialize(statusJson, List<InjixoAgentStatusModel>.class);
-        InjixoClient.sendAgentStatusRequest(statuses);
+        try {
+            List<InjixoAgentStatusModel> statuses = (List<InjixoAgentStatusModel>) JSON.deserialize(statusJson, List<InjixoAgentStatusModel>.class);
+            InjixoClient.sendAgentStatusRequest(statuses);
+        } catch (Exception e) {
+            ApexFaultHandler.publishError(e, 'InjixoAgentStatusInvocable', 'sendStatusesFuture');
+        }
     }
 }

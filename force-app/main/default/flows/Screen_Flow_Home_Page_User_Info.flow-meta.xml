@@ -60,7 +60,7 @@
         <dataType>String</dataType>
         <expression>IF(
   ISBLANK({!varT_FormattedQueueNames}),
-  &quot;Je bent niet toegewezen aan een wachtrij&quot;,
+  &quot;Je bent niet toegewezen aan een wachtrij.&quot;,
   &quot;Vandaag ben je toegewezen aan wachtrij:&quot;
 )</expression>
     </formulas>

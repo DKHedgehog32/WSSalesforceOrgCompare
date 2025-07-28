@@ -40,6 +40,8 @@ global with sharing class ContractRestService {
 
         } catch(Exception e) {
 
+            ApexFaultHandler.publishError(e, 'ContractRestService', 'patchContract');
+
             //
             // JSON body response
             responseBodyStructure.isSuccess = false;
@@ -52,6 +54,7 @@ global with sharing class ContractRestService {
             res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
         }
     }
+
     @HttpPost
     global static void postContract() {
         RestRequest req = RestContext.request;
@@ -78,6 +81,8 @@ global with sharing class ContractRestService {
 
         } catch(Exception e) {
 
+            ApexFaultHandler.publishError(e, 'ContractRestService', 'postContract');
+
             //
             // JSON body response
             responseBodyStructure.isSuccess = false;
@@ -90,9 +95,7 @@ global with sharing class ContractRestService {
             res.responseBody = Blob.valueOf(JSON.serialize(responseBodyStructure, true));
         }
         //System.debug('### Service getRelation returning '+JSON.serializePretty(responseBodyStructure));
-
     }
-
 
     public static RestResponse testPostCall(ContractModel contr) {
 

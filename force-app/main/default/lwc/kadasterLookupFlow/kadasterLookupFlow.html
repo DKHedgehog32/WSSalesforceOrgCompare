@@ -1,0 +1,58 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_none slds-p-vertical_none">
+            <lightning-input
+                label={label.postalCode}
+                placeholder="1234AB"
+                field-level-help={label.postalCodeHelpText}
+                value={postalCode}
+                onchange={handlePostalCodeChange}
+                message-when-pattern-mismatch={label.postalCodeHelpText}
+                pattern="[0-9]{4}[A-Za-z]{2}"
+                class={postalCodeInputClass}
+                required
+            ></lightning-input>
+            <lightning-input 
+                label={label.houseNumber} 
+                placeholder="21" 
+                field-level-help={label.houseNumberHelpText}
+                value={houseNumber} 
+                onchange={handleHouseNumberChange} 
+                type="number"
+                required
+            ></lightning-input>
+
+            <template if:true={loading}>
+                <lightning-spinner alternative-text="Searching..." size="small"></lightning-spinner>
+            </template>
+
+            <template if:true={addressOptions.length}>
+                <lightning-combobox
+                    name="addressSelection"
+                    label={label.selectAnAddress}
+                    options={addressOptions}
+                    value={selectedAddressIndex}
+                    onchange={handleAddressSelect}
+                    required
+                ></lightning-combobox>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-m-top_xx-large slds-scoped-notification slds-media slds-media_center slds-theme_warning" role="status">
+                    <div class="slds-media__figure">
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            alternative-text="Warning"
+                            size="small"
+                            class="slds-icon slds-icon-text-warning">
+                        </lightning-icon>
+                    </div>
+                    <div class="slds-media__body">
+                        <p>{error}
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
